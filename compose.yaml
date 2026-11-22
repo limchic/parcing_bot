@@ -1,0 +1,16 @@
+services:
+  bot:
+    build: .
+    image: parcing-bot:local
+    restart: unless-stopped
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      POLL_INTERVAL_SECONDS: ${POLL_INTERVAL_SECONDS:-300}
+      DUMA_LIST_URL: ${DUMA_LIST_URL:-}
+    volumes:
+      - bot-data:/app/data
+
+volumes:
+  bot-data:
+

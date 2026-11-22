@@ -1,0 +1,8 @@
+beautifulsoup4
+playwright
+pypdf
+defusedxml
+striprtf
+snowballstemmer
+python-dotenv
+tzdata

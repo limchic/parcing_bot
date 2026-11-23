@@ -583,15 +583,7 @@ async def run(args):
     watch = Watch(path, datetime.now(MOSCOW).date() - timedelta(days=args.days - 1))
     try:
         async with async_playwright() as playwright:
-            browser = await playwright.chromium.launch(
-                executable_path=os.getenv("CHROMIUM_EXECUTABLE") or None,
-                args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
-                proxy={
-                    "server": "http://IP_ТВОЕГО_ПРОКСИ:ПОРТ",
-                    "username": "ТВОЙ_ЛОГИН_ПРОКСИ",
-                    "password": "ТВОЙ_ПАРОЛЬ_ПРОКСИ"
-                }
-            )
+            browser = await playwright.chromium.launch(executable_path=os.getenv("CHROMIUM_EXECUTABLE") or None)
             context = await browser.new_context()
             portal = DumaPortal(context, os.getenv("DUMA_LIST_URL") or LIST_URL)
 

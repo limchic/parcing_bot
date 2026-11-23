@@ -298,9 +298,19 @@ class DumaPortal:
         self.card_page = None
 
     async def open(self, page, url):
-        response = await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        try:
+            response = await page.goto(url, wait_until="commit", timeout=90000)
+        except BrowserTimeout:
+            raise RuntimeError("СОЗД не начала отдавать страницу за 90 секунд") from None
         if response is None or not response.ok:
             raise RuntimeError(f"СОЗД недоступна (HTTP {response.status if response else '?'})")
+        try:
+            # The HTML can be parsed while a deferred script is still loading.
+            await page.wait_for_function(
+                "document.readyState !== 'loading'", polling=250, timeout=30000,
+            )
+        except BrowserTimeout:
+            raise RuntimeError("СОЗД ответила, но разбор HTML не завершился за 30 секунд") from None
 
     async def listing(self, previous):
         last_error = "Список СОЗД не изменился после перехода"

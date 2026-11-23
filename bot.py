@@ -507,6 +507,12 @@ async def run(args):
         async with async_playwright() as playwright:
             browser = await playwright.chromium.launch(
                 executable_path=os.getenv("CHROMIUM_EXECUTABLE") or None,
+                args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
+                proxy={
+                    "server": "http://IP_ТВОЕГО_ПРОКСИ:ПОРТ",
+                    "username": "ТВОЙ_ЛОГИН_ПРОКСИ",
+                    "password": "ТВОЙ_ПАРОЛЬ_ПРОКСИ"
+                }
             )
             context = await browser.new_context()
             portal = Portal(context, os.getenv("REGULATION_LIST_URL", PORTAL))
